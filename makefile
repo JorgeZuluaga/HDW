@@ -9,7 +9,7 @@ LFLAGS=-g -lm -lgsl -lgslcblas
 	$(CC) $(<:hdw.conf=) $(CFLAGS) -o $@
 
 conf.h:hdw.conf
-	./.conf2cnf $^ $@
+	./.conf2h $^ $@
 
 clean:
 	rm -rf *.o *.out
