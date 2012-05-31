@@ -72,8 +72,8 @@ int main(int argc,char *argv[])
     Lfin = 4.004;
     deltaL = 0.004;
   */
-  Lini = 0.400;
-  Lfin = 1.604;
+  Lini = 1.000;
+  Lfin = 1.000;
   deltaL = 0.004;
   niterL = (Lfin-Lini)/deltaL;
 
@@ -85,10 +85,11 @@ int main(int argc,char *argv[])
   //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
   //LOOP IN HEIGHTS
   //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+  FILE *ft=fopen("hdw-legacy.dat","w");
   for(zczc=0;zczc<=nzc-1;zczc++){
     zc=VecGet(zc_vector,zczc);
     //Ac=1.-fi*(zc/1000.);
-    Ac=0.7;
+    Ac=0.6;
     resultados=MatAlloc(niterL+1,19);
 
     //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -212,6 +213,10 @@ int main(int argc,char *argv[])
 	  VecSet(clouds_area,it-5001,aclouds);
 	  VecSet(evap,it-5001,E*(1-aclouds));
 	  VecSet(prec,it-5001,P*aclouds);
+	  
+	  fprintf(ft,"%e %e %e %e %e\n",
+		  t,Ts,aclouds,awhite,ablack);
+
 	}
 	it++;
 	
@@ -289,5 +294,6 @@ int main(int argc,char *argv[])
     MatFree(resultados);
 
   }//end for heights
-
+  fclose(ft);
+  
 }//end program

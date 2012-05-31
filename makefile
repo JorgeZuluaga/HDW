@@ -19,6 +19,13 @@ PROGRAMS=hdw-test.out
 
 all:$(PROGRAMS)
 
+#######################################################################
+#DEVELOPERS RULES 
+#######################################################################
+
+edit:
+	emacs -nw *.cpp *.h *.conf MANUAL README
+
 push:
 	git commit -am "Commit"
 	git push origin master
