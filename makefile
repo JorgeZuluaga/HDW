@@ -18,3 +18,10 @@ clean:
 PROGRAMS=hdw-test.out
 
 all:$(PROGRAMS)
+
+push:
+	git commit -am "Commit"
+	git push origin master
+
+pull:
+	git pull
