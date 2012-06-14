@@ -125,6 +125,13 @@ int main(int argc,char *argv[])
       //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
       for(t=0;t<=t_modelacion;t+=t_integracion){
 
+	//if(it>5000){
+	if(it>-1){
+	  fprintf(ft,"%e %e %e %e %e\n",
+		  t,Ts,aclouds,awhite,ablack);
+
+	}
+
 	xx = pp - awhite - ablack;
 	As = xx*Agf + ablack*Ab + awhite*Aw;
 
@@ -213,11 +220,8 @@ int main(int argc,char *argv[])
 	  VecSet(clouds_area,it-5001,aclouds);
 	  VecSet(evap,it-5001,E*(1-aclouds));
 	  VecSet(prec,it-5001,P*aclouds);
-	  
-	  fprintf(ft,"%e %e %e %e %e\n",
-		  t,Ts,aclouds,awhite,ablack);
-
 	}
+	
 	it++;
 	
       }//end for modelling time t

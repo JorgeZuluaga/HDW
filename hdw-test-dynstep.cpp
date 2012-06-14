@@ -31,7 +31,7 @@ int main(int argc,char* argv[])
   const gsl_odeiv_step_type *T=gsl_odeiv_step_rk4;
   gsl_odeiv_step *s=gsl_odeiv_step_alloc(T,4);
   gsl_odeiv_evolve *e=gsl_odeiv_evolve_alloc(4);
-  gsl_odeiv_control *c=gsl_odeiv_control_y_new(0.0,1.0E-5);
+  gsl_odeiv_control *c=gsl_odeiv_control_y_new(0.0,1.0E-7);
   
   gsl_odeiv_system sys;
   sys.function=&HDW_System;
@@ -51,12 +51,13 @@ int main(int argc,char* argv[])
   double tt;
   double dt=1;//year
   double ddt=dt/100.0;//year
-  double Intime=10000.0; //year
-  FILE *fl=fopen("HDW.dat","w");
+  double Intime=50000.0; //year
+  FILE *fl=fopen("HDW-dynstep.dat","w");
 
   //Basic statistics
   double Tsmin=1000,Tsmed,Tsmax=-1000;
   double awmin=1000,awmed,awmax=-1000;
+  int iit;
  
   it=0;
   is=0;
@@ -67,16 +68,14 @@ int main(int argc,char* argv[])
       fprintf(fl,"%e %e %e %e %e\n",t,y[0],y[1],y[2],y[3]);
     }
 
-    for(tt=0;tt<=1.0;tt+=ddt){
-      gsl_odeiv_step_apply(s,t+tt,ddt,y,yerr,dydt,dydto,&sys);
-      dydt[0]=dydto[0];
-      dydt[1]=dydto[1];
-      dydt[2]=dydto[2];
-      dydt[3]=dydto[3];
+    iit=0;
+    while(tt<t+dt){
+      gsl_odeiv_evolve_apply(e,c,s,&sys,&tt,t+dt,&ddt,y);
+      iit++;
     }
 
     if((it%2000)==0)
-      printf("Time t = %e\n",t);
+      printf("Time t = %e (intermediate steps: %d)\n",t,iit);
     it++;
 
     if(it>5000){
